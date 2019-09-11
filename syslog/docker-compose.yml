@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+    syslog:
+        image: harbor.iit.local/ict/syslogng:latest
+        volumes:
+            - ./vol_syslog:/etc/syslog-ng
+            - vol_logs:/var/log/remotelogs
+        ports:
+            - 2514:514
+            - 2514:514/udp
+        environment:
+          - SYSTEMD_LOG_LEVEL=notice
+               
+volumes:
+   vol_syslog:
+   vol_logs:
+

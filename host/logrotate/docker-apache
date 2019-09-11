@@ -1,0 +1,9 @@
+/var/lib/docker/volumes/JOOMLA_WEB_*/_data/logs/*.log {
+	daily
+	missingok
+	rotate 14
+	compress
+	delaycompress
+	notifempty
+}
+

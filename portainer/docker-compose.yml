@@ -1,0 +1,33 @@
+version: '3.2'
+
+services:
+  agent:
+    image: portainer/agent
+#    environment:
+#      AGENT_CLUSTER_ADDR: tasks.agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - target: 9001
+        published: 9001
+        protocol: tcp
+        mode: host
+    networks:
+      - portainer_agent
+
+  portainer:
+    image: portainer/portainer
+    command: -H tcp://agent:9001 --tlsskipverify
+    ports:
+      - "8090:9000"
+      - "8000:8000"
+    volumes:
+      - portainer_data:/data
+    networks:
+      - portainer_agent
+
+networks:
+  portainer_agent:
+#    driver: overlay
+volumes:
+  portainer_data:

@@ -1,0 +1,120 @@
+version: '3.6'
+services:
+  # MongoDB: https://hub.docker.com/_/mongo/
+  mongodb:
+    image: mongo:3
+    container_name: mongo
+    environment:
+      - TZ=Europe/Rome
+    volumes:
+      - mongodb:/data/db
+  adminmongo:
+    image: mrvautin/adminmongo
+    container_name: adminmongo
+    ports:
+      - 8080:1234
+    environment:
+      - HOST=0.0.0.0
+  elasticsearch:
+    #https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docker.html
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.2
+    container_name: elasticsearch
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_new:/usr/share/elasticsearch/data
+      - ./es.config.6:/usr/share/elasticsearch/config
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=elasticsearch
+      - network.host=0.0.0.0
+      - TZ=Europe/Rome
+      - "cluster.name=docker-cluster"
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.2
+    command: echo "{put your service name here} disabled"
+    container_name: elasticsearch2
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch2_new:/usr/share/elasticsearch/data
+#      - ./es2.config.6:/usr/share/elasticsearch/config
+    environment:
+      - TZ=Europe/Rome
+      - "cluster.name=docker-cluster"
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+  dejavu:
+    image: appbaseio/dejavu:3.2.3
+    container_name: dejavu
+    ports:
+      - '8081:1358'
+    links:
+      - elasticsearch
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  graylog:
+    image: graylog/graylog:3.1
+    container_name: graylog
+    volumes:
+      - ./graylog.config:/usr/share/graylog/data/config
+    environment:
+      # CHANGE ME (must be at least 16 characters)!
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_WEB_ENDPOINT_URI=https://graylog.iit.local/api
+      - GRAYLOG_HTTP_EXTERNAL_URI=https://graylog.iit.local/
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=elasticsearch
+      - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
+      - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=172.31.0.111
+      - GRAYLOG_TRANSPORT_EMAIL_PORT=25
+      - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
+      - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
+      - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
+      - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=https://graylog.iit.local
+      - TZ=Europe/Rome
+      - root_timezone=Europe/Rome
+    links:
+      - mongodb:mongo
+      - elasticsearch
+    depends_on:
+      - mongodb
+      - elasticsearch
+    ports:
+      - 80:9000
+      - 1515:1515/udp
+      - 12201:12201/udp
+      - 12202:12202/udp
+      - 12205:12205/udp
+      - 12209:12209/udp
+      - 1514:1514
+      - 1516:1516
+      - 514:514/udp
+volumes:
+ elasticsearch_new:
+ elasticsearch2_new:
+ mongodb:

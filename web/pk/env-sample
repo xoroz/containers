@@ -1,0 +1,6 @@
+SITE_PORT=1802
+SITE_NAME=bsr.example.com
+SITE_VOLUME=PK_WEB_1802
+DB_VOLUME=PK_DB_1802
+DB_ROOT_PASSWORD=password
+DB_NAME=bsr_example.com

@@ -1,0 +1,3 @@
+97df8aedf24b:/usr/share/elasticsearch/config/ingest-geoip/GeoLite2-ASN.mmdb
+97df8aedf24b:/usr/share/elasticsearch/config/ingest-geoip/GeoLite2-City.mmdb
+97df8aedf24b:/usr/share/elasticsearch/config/ingest-geoip/GeoLite2-Country.mmdb

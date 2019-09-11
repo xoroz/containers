@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  web:
+#    user: "${USER_ID}:${GROUP_ID}"
+    image: xoroz.com/pk-web
+    ports:
+      - "${SITE_PORT}:80"
+    volumes:
+      - pk_web:/var/www
+
+  db:
+    image: xoroz.com/pk-db:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+    volumes:
+      - pk_db:/bitnami/mariadb/data
+
+volumes:
+ pk_web:
+  name: ${SITE_VOLUME}
+  external: false
+
+ pk_db:
+  name: ${DB_VOLUME}
+  external: false
+

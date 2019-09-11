@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  phpmyadmin:
+    image: xoroz.com/phpmyadmin
+    ports:
+      - "1901:80"
+    volumes:
+      - phpmyadmin:/var/www
+    environment:
+      - PMA_ARBITRARY=1
+volumes:
+ phpmyadmin:

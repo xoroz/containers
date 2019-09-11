@@ -1,0 +1,14 @@
+GeoLite2-Country.mmdb
+97df8aedf24b:/usr/share/elasticsearch/config/elasticsearch.keystore
+97df8aedf24b:/usr/share/elasticsearch/config/elasticsearch.yml
+97df8aedf24b:/usr/share/elasticsearch/config/jvm.options
+97df8aedf24b:/usr/share/elasticsearch/config/log4j2.properties
+97df8aedf24b:/usr/share/elasticsearch/config/role_mapping.yml
+97df8aedf24b:/usr/share/elasticsearch/config/roles.yml
+97df8aedf24b:/usr/share/elasticsearch/config/users
+97df8aedf24b:/usr/share/elasticsearch/config/users_roles
+97df8aedf24b:
+97df8aedf24b:/usr/share/elasticsearch/config/ingest-geoip:
+97df8aedf24b:GeoLite2-ASN.mmdb
+97df8aedf24b:GeoLite2-City.mmdb
+97df8aedf24b:GeoLite2-Country.mmdb
